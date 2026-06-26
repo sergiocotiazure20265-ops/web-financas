@@ -28,8 +28,13 @@ export class AutenticarUsuario {
   autenticar() {
     //Enviando uma requisição HTTP POST para a API
     this.http.post('http://localhost:8082/api/v1/usuario/autenticar', this.formAutenticar.value)
-      .subscribe((response) => {
-        console.log(response);
+      .subscribe({
+        next: (response) => {
+          console.log('Sucesso!', response);
+        },
+        error: (e) => {
+          console.log('Erro!', e.error);
+        }
       });
   }
 
