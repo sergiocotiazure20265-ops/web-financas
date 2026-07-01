@@ -34,6 +34,17 @@
                         </p>
                     </div>
 
+                    @if(mensagemSucesso()) {
+                        <div class="alert alert-success mt-2 mb-2">
+                            <strong>{{ mensagemSucesso() }}</strong>
+                        </div>
+                    }
+                    @else if(mensagemErro()) {
+                        <div class="alert alert-danger mt-2 mb-2">
+                            <strong>{{ mensagemErro() }}</strong>
+                        </div>
+                    }
+
                     <form [formGroup]="formCriarUsuario" (ngSubmit)="criarUsuario()">
 
                         <div class="mb-3">
@@ -42,9 +53,9 @@
                                 placeholder="Digite seu nome completo" formControlName="nome" />
 
                             @if(formCriarUsuario.get('nome')?.touched && formCriarUsuario.get('nome')?.invalid) {
-                                <div class="text-danger">
-                                    O nome é obrigatório e deve ter pelo menos 8 caracteres.
-                                </div>    
+                            <div class="text-danger">
+                                O nome é obrigatório e deve ter pelo menos 8 caracteres.
+                            </div>
                             }
 
                         </div>
@@ -55,9 +66,9 @@
                                 placeholder="seuemail@exemplo.com" formControlName="email" />
 
                             @if(formCriarUsuario.get('email')?.touched && formCriarUsuario.get('email')?.invalid) {
-                                <div class="text-danger">
-                                    O email é obrigatório e deve ser um endereço válido.
-                                </div>    
+                            <div class="text-danger">
+                                O email é obrigatório e deve ser um endereço válido.
+                            </div>
                             }
 
                         </div>
@@ -68,10 +79,10 @@
                                 placeholder="Digite sua senha" formControlName="senha" />
 
                             @if(formCriarUsuario.get('senha')?.touched && formCriarUsuario.get('senha')?.invalid) {
-                                <div class="text-danger">
-                                    A senha é obrigatória e deve ter pelo menos uma letra minúscula, uma letra maiúscula, 
-                                    um número, um símbolo e no mínimo 8 caracteres.
-                                </div>    
+                            <div class="text-danger">
+                                A senha é obrigatória e deve ter pelo menos uma letra minúscula, uma letra maiúscula,
+                                um número, um símbolo e no mínimo 8 caracteres.
+                            </div>
                             }
 
                         </div>
@@ -82,16 +93,38 @@
                                 name="senhaConfirmacao" placeholder="Confirme sua senha"
                                 formControlName="senhaConfirmacao" />
 
-                            @if(formCriarUsuario.get('senhaConfirmacao')?.touched && formCriarUsuario.get('senhaConfirmacao')?.invalid) {
-                                <div class="text-danger">
-                                   A confirmação da senha é obrigatória e deve ser estar igual à senha informada no campo anterior.
-                                </div>    
+                            @if(formCriarUsuario.get('senhaConfirmacao')?.touched &&
+                            formCriarUsuario.get('senhaConfirmacao')?.invalid) {
+                            <div class="text-danger">
+                                Por favor, confirme a sua senha.
+                            </div>
+                            }
+                            @else if(formCriarUsuario.get('senhaConfirmacao')?.touched &&
+                            formCriarUsuario.hasError('senhasDiferentes')) {
+                            <div class="text-danger">
+                                As senhas não conferem, por favor preencha novamente.
+                            </div>
                             }
 
                         </div>
 
-                        <div class="mb-4">
-                            <input type="checkbox" formControlName="aceiteTermos" /> Aceito os termos de uso.
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="aceiteTermos"
+                                formControlName="aceiteTermos" />
+
+                            <label class="form-check-label" for="aceiteTermos">
+                                Aceito os
+                                <a href="#" class="text-decoration-none fw-semibold" data-bs-toggle="modal"
+                                    data-bs-target="#modalTermosUso">
+                                    termos de uso
+                                </a>.
+                            </label>
+
+                            @if(formCriarUsuario.get('aceiteTermos')?.touched && formCriarUsuario.get('aceiteTermos')?.invalid) {
+                            <div class="text-danger mt-1">
+                                Você precisa aceitar os termos de uso para continuar.
+                            </div>
+                            }
                         </div>
 
                         <div class="d-grid mb-3">
@@ -110,6 +143,96 @@
                     </form>
 
                 </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Termos de Uso -->
+<div 
+    class="modal fade" 
+    id="modalTermosUso" 
+    tabindex="-1" 
+    aria-labelledby="modalTermosUsoLabel" 
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="modalTermosUsoLabel">
+                    Termos de Uso - Web Finanças
+                </h5>
+
+                <button 
+                    type="button" 
+                    class="btn-close" 
+                    data-bs-dismiss="modal" 
+                    aria-label="Fechar"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    Ao criar uma conta no <strong>Web Finanças</strong>, você concorda com os termos e condições
+                    descritos abaixo. Leia atentamente antes de continuar o cadastro.
+                </p>
+
+                <h6 class="fw-bold mt-4">1. Uso da plataforma</h6>
+                <p>
+                    O Web Finanças é uma plataforma destinada ao controle financeiro pessoal, permitindo o cadastro,
+                    consulta e acompanhamento de receitas, despesas e saldos. O usuário compromete-se a utilizar o
+                    sistema de forma responsável e apenas para fins legais.
+                </p>
+
+                <h6 class="fw-bold mt-4">2. Responsabilidade pelas informações</h6>
+                <p>
+                    O usuário é responsável pela veracidade das informações cadastradas na plataforma, incluindo dados
+                    pessoais, movimentações financeiras e demais registros inseridos no sistema.
+                </p>
+
+                <h6 class="fw-bold mt-4">3. Segurança da conta</h6>
+                <p>
+                    O usuário deve manter sua senha em sigilo e não compartilhá-la com terceiros. Qualquer atividade
+                    realizada com a conta será considerada de responsabilidade do titular cadastrado.
+                </p>
+
+                <h6 class="fw-bold mt-4">4. Privacidade dos dados</h6>
+                <p>
+                    As informações cadastradas serão utilizadas exclusivamente para funcionamento da plataforma,
+                    melhoria da experiência do usuário e geração de relatórios financeiros pessoais.
+                </p>
+
+                <h6 class="fw-bold mt-4">5. Disponibilidade do serviço</h6>
+                <p>
+                    A plataforma poderá passar por manutenções, atualizações ou melhorias, podendo ficar temporariamente
+                    indisponível sem aviso prévio.
+                </p>
+
+                <h6 class="fw-bold mt-4">6. Aceite dos termos</h6>
+                <p>
+                    Ao marcar a opção de aceite e realizar o cadastro, o usuário declara que leu, compreendeu e concorda
+                    com estes termos de uso.
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal"
+                >
+                    Fechar
+                </button>
+
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    data-bs-dismiss="modal"
+                >
+                    Entendi
+                </button>
             </div>
 
         </div>

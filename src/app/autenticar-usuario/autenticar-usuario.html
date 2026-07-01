@@ -27,6 +27,12 @@
                         </p>
                     </div>
 
+                    @if(mensagemErro()) {
+                        <div class="alert alert-danger">
+                            <strong>{{ mensagemErro() }}</strong>
+                        </div>
+                    }
+
                     <form [formGroup]="formAutenticar" (ngSubmit)="autenticar()">
 
                         <div class="mb-3">
